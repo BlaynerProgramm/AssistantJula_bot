@@ -40,7 +40,7 @@ namespace AssistantJula_bot.Controller
 			try
 			{
 				string queryString = $"INSERT INTO dbo.Reminder (IdChat, Time, Message) VALUES ({idChat},'{time}','{message}')";
-				using SqlConnection connection = new(@"Server=DESKTOP-25EV0KI\DEV;Database=AssistanJula_Db;Trusted_Connection = True;");
+				using SqlConnection connection = new(ConfigurationManager.ConnectionStrings["connectionStr"].ConnectionString);
 				connection.Open();
 				SqlDataAdapter adapter = new(queryString, connection);
 				adapter.Fill(new DataSet());
