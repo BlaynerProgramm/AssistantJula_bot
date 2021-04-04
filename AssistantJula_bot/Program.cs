@@ -2,30 +2,20 @@
 using AssistantJula_bot.Model.Commands;
 
 using System;
-using System.Configuration;
-
-using Telegram.Bot;
 
 namespace AssistantJula_bot
 {
-	class Program
+	internal class Program
 	{
-		private static TelegramBotClient AJula { get; set; } 
-		static void Main()
+		private static void Main()
 		{
-			Console.Title = "Assistant Jula";
+			Console.Title = Bot.Me.FirstName;
+			Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine($"Бот {Bot.Me.Id}:{Bot.Me.FirstName} подключён"); Console.ResetColor();
+			Bot.AssistantJula.OnMessage += AJula_OnMessage;
 
-			AJula = new(ConfigurationManager.AppSettings.Get("ApiKeyBot")) { Timeout = TimeSpan.FromSeconds(10) };
-
-			var me = AJula.GetMeAsync().Result;
-			Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine($"Бот {me.Id}:{me.FirstName} подключён"); Console.ResetColor();
-
-			AJula.OnMessage += AJula_OnMessage;
-
-			AJula.StartReceiving();
+			Bot.AssistantJula.StartReceiving();
 			Console.ReadKey();
 		}
-
 		private static void AJula_OnMessage(object sender, Telegram.Bot.Args.MessageEventArgs e)
 		{
 			ICommand command;
@@ -34,20 +24,28 @@ namespace AssistantJula_bot
 				case null: return;
 				case "привет":
 					command = new HelloCommand();
-					command.Execute(e.Message, AJula);
+					command.Execute(e.Message);
 					break;
 				case "время":
 					command = new TimeCommand();
-					command.Execute(e.Message, AJula);
+					command.Execute(e.Message);
 					break;
 				case "погода":
 					command = new WeatherCommand();
-					command.Execute(e.Message, AJula);
+					command.Execute(e.Message);
 					break;
 				case "курс":
 					command = new CurrencyCommand();
-					command.Execute(e.Message, AJula);
+					command.Execute(e.Message);
 					break;
+				case "создание напоминания":
+					Bot.flag = true;
+					break;
+			}
+			if (Bot.flag)
+			{
+				command = new ReminderCommand();
+				command.Execute(e.Message);
 			}
 		}
 	}
