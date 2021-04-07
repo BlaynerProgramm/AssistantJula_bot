@@ -30,9 +30,16 @@ namespace AssistantJula_bot.Model
 						new KeyboardButton[]
 						{
 							new KeyboardButton("Курс"),
+						},
+						new KeyboardButton[]
+						{
+							new KeyboardButton("Газета"),
 						}
 				   }
 		};
+		/// <summary>
+		/// Время
+		/// </summary>
 		public static readonly ReplyKeyboardMarkup timeKeyboard = new()
 		{
 			Keyboard =
@@ -56,7 +63,10 @@ namespace AssistantJula_bot.Model
 						}
 				   }
 		};
-		private static readonly ReplyKeyboardMarkup cityKeyboard = new ReplyKeyboardMarkup
+		/// <summary>
+		/// Города
+		/// </summary>
+		public static readonly ReplyKeyboardMarkup cityKeyboard = new()
 		{
 			Keyboard =
 				   new KeyboardButton[][]
@@ -75,7 +85,10 @@ namespace AssistantJula_bot.Model
 						}
 				   }
 		};
-		public static readonly ReplyKeyboardMarkup cancelKeyboard = new ReplyKeyboardMarkup
+		/// <summary>
+		/// Кнопка отмены операции
+		/// </summary>
+		public static readonly ReplyKeyboardMarkup cancelKeyboard = new()
 		{
 			Keyboard =
 				new KeyboardButton[][]
@@ -86,5 +99,19 @@ namespace AssistantJula_bot.Model
 								}
 				}
 		};
+		/// <summary>
+		/// Встроенная клавиатура для новостей
+		/// </summary>
+		public static readonly InlineKeyboardMarkup inlineNewsKeyboard = new
+			(
+				new InlineKeyboardButton[][]
+				{
+						new []
+						{
+							new InlineKeyboardButton() { Text = "Назад", CallbackData = "back" },
+							new InlineKeyboardButton() { Text = "Дальше", CallbackData = "next"},
+						},
+				}
+			);
 	}
 }

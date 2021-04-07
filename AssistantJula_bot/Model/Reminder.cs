@@ -7,7 +7,7 @@ namespace AssistantJula_bot.Model
 	/// </summary>
 	public class Reminder
 	{
-		public Guid ReminderId { get; set; }
+		public Guid Id { get; set; }
 		/// <summary>
 		/// ID чата для отправки
 		/// </summary>

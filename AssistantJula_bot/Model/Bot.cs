@@ -11,7 +11,10 @@ namespace AssistantJula_bot.Model
 	/// </summary>
 	public static class Bot
 	{
-		public static bool flag;
+		/// <summary>
+		/// Вспомогательный флаг
+		/// </summary>
+		public static bool Flag { get; set; }
 		/// <summary>
 		/// Экземпляр бота
 		/// </summary>
@@ -21,14 +24,5 @@ namespace AssistantJula_bot.Model
 		/// Информация о боте
 		/// </summary>
 		public static User Me { get; private set; } = AssistantJula.GetMeAsync().Result;
-
-		/// <summary>
-		/// Получить всю информацию о боте
-		/// </summary>
-		/// <returns>Строка со всей информацией</returns>
-		public static string GetFullInfo()
-		{
-			return "";
-		}
 	}
 }

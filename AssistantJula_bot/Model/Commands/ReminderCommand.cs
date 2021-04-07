@@ -15,35 +15,39 @@ namespace AssistantJula_bot.Model.Commands
 
 		public void Execute(Message message) => CreateRemider(message);
 
-
 		private static byte flag = 0;
-		string message;
-		string time;
+		private static string message;
+		private string time;
+
+		/// <summary>
+		/// Создание напоминания
+		/// </summary>
+		/// <param name="e">Экземпляр сообщения</param>
 		public void CreateRemider(Message e)
 		{
 			long cid = e.Chat.Id;
 
 			switch (flag)
 			{
-				case 2: Step3(e, cid); break;
-				case 1: Step2(e, cid); break;
-				case 0: Step1(cid); break;
+				case 2: SaveToDb(e, cid); break;
+				case 1: SetTime(e, cid); break;
+				case 0: SetMessage(cid); break;
 			}
 		}
 
-		private void Step1(long cid)
+		private static void SetMessage(long cid)
 		{
 			flag = 1;
 			Bot.AssistantJula.SendTextMessageAsync(cid, "О чём вам напомнить?", replyMarkup: KeyboardTemplates.cancelKeyboard);
 		}
 
-		private void Step2(Message e, long cid)
+		private static void SetTime(Message e, long cid)
 		{
 			message = e.Text;
 			if (message != "Отмена")
 			{
 				flag = 2;
-				Bot.AssistantJula.SendTextMessageAsync(cid, "Через сколько минут?");
+				Bot.AssistantJula.SendTextMessageAsync(cid, "Через сколько минут?", replyMarkup: KeyboardTemplates.timeKeyboard);
 			}
 			else
 			{
@@ -52,14 +56,33 @@ namespace AssistantJula_bot.Model.Commands
 			}
 		}
 
-		private void Step3(Message e, long cid)
+		private void SaveToDb(Message e, long cid)
 		{
 			time = e.Text;
-			Bot.flag = false;
+			Bot.Flag = false;
 			flag = 4;
-			Console.WriteLine("Создание напоминания от " + cid); //TODO: Проверки
-			ReminderController.Add(e.Chat.Id, new TimeSpan(DateTime.Now.Hour, Convert.ToInt32(time), DateTime.Now.Second), message);
-			Bot.AssistantJula.SendTextMessageAsync(cid, $"{message} через {time}");
+			Console.WriteLine("Создание напоминания от " + cid);
+			string response = ReminderController.Add(e.Chat.Id, new TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute + Convert.ToInt32(time), DateTime.Now.Second), message);
+			Bot.AssistantJula.SendTextMessageAsync(cid, response, replyMarkup: KeyboardTemplates.mainKeyboard);
+		}
+
+		/// <summary>
+		/// Отправка напоминаний в назначенное время
+		/// </summary>
+		public static async void SendReminder()
+		{
+			Reminder reminder = null;
+			while (reminder is null)
+			{
+				reminder = ReminderController.CheckTimeReminders();
+			}
+
+			await Bot.AssistantJula.SendTextMessageAsync
+			   (
+			   chatId: reminder.IdChat,
+			   text: $"Напоминание {reminder.Message}"
+			   );
+			ReminderController.Delete(reminder);
 		}
 	}
 }
