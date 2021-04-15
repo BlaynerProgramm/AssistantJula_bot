@@ -35,6 +35,36 @@ namespace AssistantJula_bot
 						   replyMarkup: KeyboardTemplates.inlineNewsKeyboard
 					   ).ConfigureAwait(false);
 					break;
+
+				case "back":
+					Bot.AssistantJula.EditMessageTextAsync
+					   (
+						   chatId: e.CallbackQuery.From.Id,
+						   messageId: e.CallbackQuery.Message.MessageId,
+						   text: NewsCommand.TurningPages(),
+						   replyMarkup: KeyboardTemplates.inlineNewsKeyboard
+					   ).ConfigureAwait(false);
+					break;
+
+				case "nextE":
+					Bot.AssistantJula.EditMessageTextAsync
+					   (
+						   chatId: e.CallbackQuery.From.Id,
+						   messageId: e.CallbackQuery.Message.MessageId,
+						   text: EmailCommand.ExecuteEmail(EmailCommand.NextEmail),
+						   replyMarkup: KeyboardTemplates.inlineEmailKeyboard
+					   ).ConfigureAwait(false);
+					break;
+
+				case "backE":
+					Bot.AssistantJula.EditMessageTextAsync
+					   (
+						   chatId: e.CallbackQuery.From.Id,
+						   messageId: e.CallbackQuery.Message.MessageId,
+						   text: EmailCommand.ExecuteEmail(EmailCommand.BackEmail),
+						   replyMarkup: KeyboardTemplates.inlineEmailKeyboard
+					   ).ConfigureAwait(false);
+					break;
 			}
 		}
 
@@ -65,6 +95,11 @@ namespace AssistantJula_bot
 					break;
 				case "газета":
 					command = new NewsCommand();
+					command.Execute(e.Message);
+					break;
+
+				case "почта":
+					command = new EmailCommand(e.Message.Chat.Id);
 					command.Execute(e.Message);
 					break;
 

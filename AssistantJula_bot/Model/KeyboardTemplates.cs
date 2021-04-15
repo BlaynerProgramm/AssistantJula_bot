@@ -7,6 +7,7 @@ namespace AssistantJula_bot.Model
 	/// </summary>
 	public static class KeyboardTemplates
 	{
+		#region ReplyKeyboard
 		/// <summary>
 		/// Меню
 		/// </summary>
@@ -34,6 +35,10 @@ namespace AssistantJula_bot.Model
 						new KeyboardButton[]
 						{
 							new KeyboardButton("Газета"),
+						},
+						new KeyboardButton[]
+						{
+							new KeyboardButton("Почта"),
 						}
 				   }
 		};
@@ -99,6 +104,8 @@ namespace AssistantJula_bot.Model
 								}
 				}
 		};
+		#endregion
+		#region InlineKeyboard
 		/// <summary>
 		/// Встроенная клавиатура для новостей
 		/// </summary>
@@ -113,5 +120,20 @@ namespace AssistantJula_bot.Model
 						},
 				}
 			);
+		/// <summary>
+		/// Встроенная клавиатура для писем
+		/// </summary>
+		public static readonly InlineKeyboardMarkup inlineEmailKeyboard = new
+			(
+				new InlineKeyboardButton[][]
+				{
+						new []
+						{
+							new InlineKeyboardButton() { Text = "Назад", CallbackData = "backE" },
+							new InlineKeyboardButton() { Text = "Дальше", CallbackData = "nextE"},
+						},
+				}
+			);
+		#endregion
 	}
 }
