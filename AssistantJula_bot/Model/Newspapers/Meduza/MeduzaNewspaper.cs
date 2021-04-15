@@ -20,6 +20,6 @@
 		/// </summary>
 		public string Image { get; set; }
 
-		public override string ToString() => $"{Title}\nПодробней:\n{Description}\nСсылка: {Url}\nОпубликовано: {Date}";
+		public override string ToString() => $"{Title}\nПодробней:\n{Description}\n{Image}\nСсылка: {Url}\nОпубликовано: {Date}";
 	}
 }

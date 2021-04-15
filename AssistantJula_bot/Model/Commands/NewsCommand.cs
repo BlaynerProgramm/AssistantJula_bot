@@ -1,5 +1,6 @@
 ﻿using AssistantJula_bot.Model.Newspapers;
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
@@ -16,34 +17,67 @@ namespace AssistantJula_bot.Model.Commands
 	{
 		public string Name { get; init; } = "Газета";
 
-		private static int i = 0;
+		/// <summary>
+		/// Счётчик
+		/// </summary>
+		private static int _i;
+		/// <summary>
+		/// Коллекция всех новостей
+		/// </summary>
+		private static readonly List<MeduzaNewspaper> _meduzaNewspapers = GetNews();
+		/// <summary>
+		/// Операция
+		/// </summary>
+		/// <returns></returns>
+		public delegate int Operation();
 
-		public async void Execute(Message message)
-		{
+		public async void Execute(Message message) =>
 			await Bot.AssistantJula.SendTextMessageAsync
 					   (
 						   chatId: message.Chat,
-						   text: GetNews()[0].ToString(),
+						   text: _meduzaNewspapers[_i=0].ToString(),
 						   replyMarkup: KeyboardTemplates.inlineNewsKeyboard
 					   ).ConfigureAwait(false);
-		}
+
+		#region Навигация
 		/// <summary>
-		/// Перелестнуть страницу
+		/// Следующая страница
 		/// </summary>
 		/// <returns></returns>
-		public static string TurningPages() => GetNews()[i++].ToString();
-
+		public static int NextPages() => ++_i;
+		/// <summary>
+		/// Предыдущая страница
+		/// </summary>
+		/// <returns></returns>
+		public static int BackPages() => --_i;
+		/// <summary>
+		/// Навигация по газете
+		/// </summary>
+		/// <param name="operation">Следующая или предыдущая</param>
+		/// <returns></returns>
+		public static string NavigationNewspaper(Operation operation)
+		{
+			try
+			{
+				return _meduzaNewspapers[operation.Invoke()].ToString();
+			}
+			catch (ArgumentOutOfRangeException)
+			{
+				return "Некуда листать";
+			}
+		}
+		#endregion
 		/// <summary>
 		/// Получить новости
 		/// </summary>
-		/// <returns></returns>
+		/// <returns>Коллекцию новостей</returns>
 		private static List<MeduzaNewspaper> GetNews()
 		{
 			string url = @"https://meduza.io/rss2/all";
 			WebRequest request = WebRequest.Create(url);
 			WebResponse response = request.GetResponse();
 			XmlDocument xmlDocument = new();
-			using (StreamReader stream = new StreamReader(response.GetResponseStream()))
+			using (StreamReader stream = new(response.GetResponseStream()))
 			{
 				xmlDocument.LoadXml(stream.ReadToEnd());
 			}

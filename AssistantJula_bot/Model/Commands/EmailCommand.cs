@@ -48,7 +48,7 @@ namespace AssistantJula_bot.Model.Commands
 							replyMarkup: KeyboardTemplates.inlineEmailKeyboard
 						).ConfigureAwait(false);
 
-		#region Операции над письмами
+		#region Навигация
 		/// <summary>
 		/// Следующее письмо
 		/// </summary>
@@ -60,11 +60,11 @@ namespace AssistantJula_bot.Model.Commands
 		/// <returns>Предыдущее письмо</returns>
 		public static int BackEmail() => --_i;
 		/// <summary>
-		/// Операции над письмом
+		/// Навигация по письмам
 		/// </summary>
 		/// <param name="operation">Следующее или предыдущее</param>
 		/// <returns>Письмо</returns>
-		public static string ExecuteEmail(OperationEmail operation)
+		public static string NavigationEmail(OperationEmail operation)
 		{
 			try
 			{

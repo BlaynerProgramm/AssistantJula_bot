@@ -11,10 +11,11 @@ namespace AssistantJula_bot
 		private static void Main()
 		{
 			Task checkTimeReminders = new(() => ReminderCommand.SendReminder());
-			checkTimeReminders.Start();
+			checkTimeReminders.Start(); //Параллельная проверка напоминаний
 
 			Console.Title = Bot.Me.FirstName;
 			Console.ForegroundColor = ConsoleColor.Green; Console.WriteLine($"Бот {Bot.Me.Id}:{Bot.Me.FirstName} подключён"); Console.ResetColor();
+			
 			Bot.AssistantJula.OnMessage += AJula_OnMessage;
 			Bot.AssistantJula.OnCallbackQuery += AssistantJula_OnCallbackQuery;
 
@@ -31,7 +32,7 @@ namespace AssistantJula_bot
 					   (
 						   chatId: e.CallbackQuery.From.Id,
 						   messageId: e.CallbackQuery.Message.MessageId,
-						   text: NewsCommand.TurningPages(),
+						   text: NewsCommand.NavigationNewspaper(NewsCommand.NextPages),
 						   replyMarkup: KeyboardTemplates.inlineNewsKeyboard
 					   ).ConfigureAwait(false);
 					break;
@@ -41,7 +42,7 @@ namespace AssistantJula_bot
 					   (
 						   chatId: e.CallbackQuery.From.Id,
 						   messageId: e.CallbackQuery.Message.MessageId,
-						   text: NewsCommand.TurningPages(),
+						   text: NewsCommand.NavigationNewspaper(NewsCommand.BackPages),
 						   replyMarkup: KeyboardTemplates.inlineNewsKeyboard
 					   ).ConfigureAwait(false);
 					break;
@@ -51,7 +52,7 @@ namespace AssistantJula_bot
 					   (
 						   chatId: e.CallbackQuery.From.Id,
 						   messageId: e.CallbackQuery.Message.MessageId,
-						   text: EmailCommand.ExecuteEmail(EmailCommand.NextEmail),
+						   text: EmailCommand.NavigationEmail(EmailCommand.NextEmail),
 						   replyMarkup: KeyboardTemplates.inlineEmailKeyboard
 					   ).ConfigureAwait(false);
 					break;
@@ -61,7 +62,7 @@ namespace AssistantJula_bot
 					   (
 						   chatId: e.CallbackQuery.From.Id,
 						   messageId: e.CallbackQuery.Message.MessageId,
-						   text: EmailCommand.ExecuteEmail(EmailCommand.BackEmail),
+						   text: EmailCommand.NavigationEmail(EmailCommand.BackEmail),
 						   replyMarkup: KeyboardTemplates.inlineEmailKeyboard
 					   ).ConfigureAwait(false);
 					break;
@@ -70,29 +71,36 @@ namespace AssistantJula_bot
 
 		private static void AJula_OnMessage(object sender, Telegram.Bot.Args.MessageEventArgs e)
 		{
+			Console.WriteLine($"От {e.Message.Chat.Id}:{e.Message.Text}");
 			ICommand command;
 			switch (e.Message.Text.ToLower())
 			{
 				case null: return;
+
 				case "привет":
 					command = new HelloCommand();
 					command.Execute(e.Message);
 					break;
+
 				case "время":
 					command = new TimeCommand();
 					command.Execute(e.Message);
 					break;
+
 				case "погода":
 					command = new WeatherCommand();
 					command.Execute(e.Message);
 					break;
+
 				case "курс":
 					command = new CurrencyCommand();
 					command.Execute(e.Message);
 					break;
+
 				case "создание напоминания":
 					Bot.Flag = true;
 					break;
+
 				case "газета":
 					command = new NewsCommand();
 					command.Execute(e.Message);
@@ -103,6 +111,14 @@ namespace AssistantJula_bot
 					command.Execute(e.Message);
 					break;
 
+				default:
+					Bot.AssistantJula.SendTextMessageAsync
+					   (
+						   chatId: e.Message.Chat,
+						   text: "Я вас не поняла",
+						   replyMarkup: KeyboardTemplates.mainKeyboard
+					   ).ConfigureAwait(false);
+					break;
 			}
 			if (Bot.Flag)
 			{
