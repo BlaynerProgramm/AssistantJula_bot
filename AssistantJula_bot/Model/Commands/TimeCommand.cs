@@ -16,7 +16,7 @@ namespace AssistantJula_bot.Model.Commands
 			await Bot.AssistantJula.SendTextMessageAsync
 			  (
 				  chatId: message.Chat,
-				  text: DateTime.Now.ToLocalTime().ToShortTimeString()
+				  text: DateTime.Now.ToUniversalTime().ToShortTimeString()
 				  ).ConfigureAwait(false);
 		}
 	}
