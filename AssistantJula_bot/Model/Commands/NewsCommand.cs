@@ -73,7 +73,7 @@ namespace AssistantJula_bot.Model.Commands
 		/// <returns>Коллекцию новостей</returns>
 		private static List<RiaRu> GetNews()
 		{
-			string url = @"https://meduza.io/rss2/all";
+			string url = @"https://ria.ru/export/rss2/archive/index.xml";
 			WebRequest request = WebRequest.Create(url);
 			WebResponse response = request.GetResponse();
 			XmlDocument xmlDocument = new();
