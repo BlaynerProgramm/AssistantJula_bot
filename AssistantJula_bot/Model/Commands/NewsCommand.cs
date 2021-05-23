@@ -1,4 +1,4 @@
-﻿using AssistantJula_bot.Model.Newspapers;
+﻿using AssistantJula_bot.Model.Newspapers.ria;
 
 using System;
 using System.Collections.Generic;
@@ -24,7 +24,7 @@ namespace AssistantJula_bot.Model.Commands
 		/// <summary>
 		/// Коллекция всех новостей
 		/// </summary>
-		private static readonly List<MeduzaNewspaper> _meduzaNewspapers = GetNews();
+		private static readonly List<RiaRu> _meduzaNewspapers = GetNews();
 		/// <summary>
 		/// Операция
 		/// </summary>
@@ -71,7 +71,7 @@ namespace AssistantJula_bot.Model.Commands
 		/// Получить новости
 		/// </summary>
 		/// <returns>Коллекцию новостей</returns>
-		private static List<MeduzaNewspaper> GetNews()
+		private static List<RiaRu> GetNews()
 		{
 			string url = @"https://meduza.io/rss2/all";
 			WebRequest request = WebRequest.Create(url);
@@ -82,8 +82,8 @@ namespace AssistantJula_bot.Model.Commands
 				xmlDocument.LoadXml(stream.ReadToEnd());
 			}
 			XmlElement xRoot = xmlDocument.DocumentElement;
-			List<MeduzaNewspaper> listNews = new(); //TODO: ArrayList
-			MeduzaNewspaper news;
+			List<RiaRu> listNews = new(); //TODO: ArrayList
+			RiaRu news;
 
 			foreach (XmlElement el in xRoot)
 			{
@@ -105,15 +105,11 @@ namespace AssistantJula_bot.Model.Commands
 							}
 							if (item.Name == "link")
 							{
-								news.Url = item.InnerText;
+								news.Link = item.InnerText;
 							}
 							if (item.Name == "pubDate")
 							{
 								news.Date = item.InnerText;
-							}
-							if (item.Name == "enclosure")
-							{
-								news.Image = item.Attributes.GetNamedItem("url").Value;
 							}
 						}
 						listNews.Add(news);

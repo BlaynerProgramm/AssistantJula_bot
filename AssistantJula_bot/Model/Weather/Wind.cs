@@ -8,6 +8,6 @@
 		/// <summary>
 		/// Скорость ветра
 		/// </summary>
-		public int speed { get; set; }
+		public float speed { get; set; }
 	}
 }
