@@ -18,7 +18,7 @@ namespace AssistantJula_bot.Model
 		/// <summary>
 		/// Экземпляр бота
 		/// </summary>
-		public static TelegramBotClient AssistantJula { get; private set; } = new(ConfigurationManager.AppSettings.Get("ApiKeyBot")) { Timeout = TimeSpan.FromSeconds(10) };
+		public static TelegramBotClient AssistantJula { get; } = new(ConfigurationManager.AppSettings.Get("ApiKeyBot")) { Timeout = TimeSpan.FromSeconds(10) };
 
 		/// <summary>
 		/// Информация о боте
