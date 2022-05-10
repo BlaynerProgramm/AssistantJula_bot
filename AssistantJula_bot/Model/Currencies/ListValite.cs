@@ -1,8 +1,3 @@
-﻿namespace AssistantJula_bot.Model.Valute
-{
-	public class ListValite
-	{
-		public Currency USD { get; set; }
-		public Currency EUR { get; set; }
-	}
-}
+﻿namespace AssistantJula_bot.Model.Currencies;
+
+internal sealed record ListValite(Currency USD, Currency EUR);

@@ -5,7 +5,7 @@ namespace AssistantJula_bot.Model
 	/// <summary>
 	/// Шаблоны клавиатур для бота
 	/// </summary>
-	public static class KeyboardTemplates
+	internal static class KeyboardTemplates
 	{
 		#region ReplyKeyboard
 		/// <summary>

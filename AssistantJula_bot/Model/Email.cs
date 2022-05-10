@@ -1,12 +1,6 @@
-﻿namespace AssistantJula_bot.Model
+﻿namespace AssistantJula_bot.Model;
+
+internal sealed record Email(string SenderName, string Subject, string Text)
 {
-	public class Email
-	{
-		public string SenderName { get; set; }
-		public string Subject { get; set; }
-		public string Text { get; set; }
-		public int CountEmails { get; set; }
-		
-		public override string ToString() => $"Ваша почта:\n\nОт {SenderName}\n{Subject}\n{Text}\n";
-	}
+	public override string ToString() => $"Ваша почта:\n\nОт {SenderName}\n{Subject}\n{Text}\n";
 }

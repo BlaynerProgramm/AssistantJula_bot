@@ -1,9 +1,3 @@
-﻿namespace AssistantJula_bot.Model.Valute
-{
-	public class Currency
-	{
-		public string CharCode { get; set; }
-		public string Name { get; set; }
-		public double Value { get; set; }
-	}
-}
+﻿namespace AssistantJula_bot.Model.Currencies;
+
+internal sealed record Currency(string CharCode, string Name, double Value);
