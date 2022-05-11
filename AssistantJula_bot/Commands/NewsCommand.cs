@@ -19,8 +19,8 @@ internal sealed class NewsCommand : ICommand
         await Bot.AssistantJula.SendTextMessageAsync
         (
             chatId: message.Chat,
-            text: _newsList[_indexArticle=0].ToString(),
-            replyMarkup: KeyboardTemplates.inlineNewsKeyboard
+            text: _newsList[_indexArticle=0].ToString()
+            //replyMarkup: KeyboardTemplates.inlineNewsKeyboard
         ).ConfigureAwait(false);
     
     /// <summary>
