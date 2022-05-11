@@ -1,81 +1,44 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Xml;
+using AssistantJula_bot.Model;
 using AssistantJula_bot.Model.Newspapers.ria;
+using Telegram.Bot;
 using Telegram.Bot.Types;
 
 namespace AssistantJula_bot.Commands;
 
 internal sealed class NewsCommand : ICommand
 {
-    private readonly LinkedList<RiaRu> _newsList;
+    private static int _indexArticle;
+    private static readonly List<RiaRu> _newsList = new(RiaRu.GetNews());
     
     public string Name { get; init; } = "Новости";
-    public delegate RiaRu Operation();
+    public delegate int Operation();
     
-    public void Execute(Message message)
-    {
-        
-    }
+    public async void Execute(Message message) =>
+        await Bot.AssistantJula.SendTextMessageAsync
+        (
+            chatId: message.Chat,
+            text: _newsList[_indexArticle=0].ToString(),
+            replyMarkup: KeyboardTemplates.inlineNewsKeyboard
+        ).ConfigureAwait(false);
     
-    public string NavigationNewspaper(Operation operation)
+    /// <summary>
+    /// Навигация по газете
+    /// </summary>
+    /// <param name="operation">Куда перелестнуть</param>
+    /// <returns></returns>
+    public static string NewspaperNavigation(Operation operation)
     {
         try
         {
-            return _newsList.ToString();
+            return _newsList[operation.Invoke()].ToString();
         }
         catch (ArgumentOutOfRangeException)
         {
             return "Некуда листать";
         }
     }
-    public NewsCommand()
-    {
-        _newsList = new LinkedList<RiaRu>(GetNews());
-    }
-    public RiaRu NextPage() => _newsList.First.Next.Value;
-    public RiaRu BackPage() => _newsList.First.Previous.Value;
-    [Obsolete("Obsolete")]
-    private static IEnumerable<RiaRu> GetNews()
-    {
-        const string url = @"https://ria.ru/export/rss2/archive/index.xml";
-        var request = WebRequest.Create(url);
-        var response = request.GetResponse();
-        XmlDocument xmlDocument = new();
-        var xRoot = xmlDocument.DocumentElement;
-        RiaRu news = new();
-        
-        using (StreamReader stream = new(response.GetResponseStream()))
-        {
-            xmlDocument.LoadXml(stream.ReadToEnd());
-        }
-        
-        foreach (var node in from XmlElement el in xRoot
-                 from XmlNode node in el.ChildNodes
-                 where node.Name == "item" select node)
-        {
-            foreach (XmlNode item in node.ChildNodes)
-            {
-                switch (item.Name)
-                {
-                    case "title":
-                        news.Title = item.InnerText;
-                        break;
-                    case "description":
-                        news.Description = item.InnerText;
-                        break;
-                    case "link":
-                        news.Link = item.InnerText;
-                        break;
-                    case "pubDate":
-                        news.Date = item.InnerText;
-                        break;
-                }
-            }
-            yield return news;
-        }
-    }
+    public static int NextPages() => ++_indexArticle;
+    public static int BackPages() => --_indexArticle;
 }
