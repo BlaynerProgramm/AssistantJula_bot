@@ -1,10 +1,9 @@
-﻿namespace AssistantJula_bot
+﻿namespace AssistantJula_bot;
+
+internal class Program
 {
-	internal class Program
+	private static void Main()
 	{
-		private static void Main()
-		{
 			
-		}
 	}
 }
