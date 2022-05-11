@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Xml;
 
-namespace AssistantJula_bot.Model.Newspapers.ria;
+namespace AssistantJula_bot.Models.Newspapers.ria;
 
-internal sealed record RiaRu : INewspaper<RiaRu>
+internal sealed record RiaRu
 {
 	public string Title { get; private set; }
 	public string Link { get; private set; }
 	public string Date { get; private set; }
 	public string Description { get; private set; }
 
-	[Obsolete("Obsolete")]
+	//[Obsolete("Obsolete")]
 	public static IEnumerable<RiaRu> GetNews()
 	{
 		const string url = @"https://ria.ru/export/rss2/archive/index.xml";

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 
-namespace AssistantJula_bot.Controller;
+namespace AssistantJula_bot.Controllers;
 
 internal sealed class DataBase<T> : IDataBase<T>
 {

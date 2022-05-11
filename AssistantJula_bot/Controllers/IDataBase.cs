@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace AssistantJula_bot.Controller;
+namespace AssistantJula_bot.Controllers;
 
 internal interface IDataBase<T>
 {

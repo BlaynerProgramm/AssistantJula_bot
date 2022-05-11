@@ -1,4 +1,4 @@
-﻿namespace AssistantJula_bot.Model;
+﻿namespace AssistantJula_bot.Models;
 
 internal sealed record Email(string SenderName, string Subject, string Text)
 {

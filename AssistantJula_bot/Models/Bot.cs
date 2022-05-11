@@ -4,7 +4,7 @@ using System.Configuration;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace AssistantJula_bot.Model;
+namespace AssistantJula_bot.Models;
 
 /// <summary>
 /// Информация о боте

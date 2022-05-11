@@ -1,6 +1,6 @@
-﻿using AssistantJula_bot.Model;
+﻿using AssistantJula_bot.Models;
 
-namespace AssistantJula_bot.Controller;
+namespace AssistantJula_bot.Controllers;
 
 internal sealed class EmailController
 {

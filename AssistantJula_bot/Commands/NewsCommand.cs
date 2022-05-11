@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using AssistantJula_bot.Model;
-using AssistantJula_bot.Model.Newspapers.ria;
+using AssistantJula_bot.Models;
+using AssistantJula_bot.Models.Newspapers.ria;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
